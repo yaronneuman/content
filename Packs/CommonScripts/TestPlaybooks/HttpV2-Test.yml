@@ -1,0 +1,361 @@
+id: HttpV2-test
+version: -1
+name: HttpV2-test
+starttaskid: "0"
+tasks:
+  "0":
+    id: "0"
+    taskid: 7071e11a-d30f-4068-8988-a90bc68b71b2
+    type: start
+    task:
+      id: 7071e11a-d30f-4068-8988-a90bc68b71b2
+      version: -1
+      name: ""
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "6"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 50
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "1":
+    id: "1"
+    taskid: 56a5be4f-a9db-4172-889d-0de03e3222d3
+    type: regular
+    task:
+      id: 56a5be4f-a9db-4172-889d-0de03e3222d3
+      version: -1
+      name: Test Get request
+      description: Sends http request
+      scriptName: HttpV2
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "3"
+    scriptarguments:
+      basic_auth:
+        simple: '{TOMMED}MGO8fN35aG5DgDw7JJlDEBlaPvDBNqtPncD3xdlx1Bs2OCZj+L/+2BEN/9gay32VbYimMHdCl/XAymQ4wJYFLv5DlAwB/yypnnwpzNYPoEk='
+      method:
+        simple: GET
+      parse_response_as:
+        simple: json
+      request_content_type:
+        simple: json
+      response_content_type:
+        simple: json
+      unsecure:
+        simple: "True"
+      url:
+        simple: https://paloaltonfr3.jamfcloud.com/JSSResource/computers/id/1/subset/General
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 370
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "2":
+    id: "2"
+    taskid: 1437571a-abaa-43f9-8235-a7344435d5a9
+    type: regular
+    task:
+      id: 1437571a-abaa-43f9-8235-a7344435d5a9
+      version: -1
+      name: Test post XML body request
+      description: Sends http request
+      scriptName: HttpV2
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "5"
+    scriptarguments:
+      basic_auth:
+        simple: '{TOMMED}zz0lhDtmhR+FqBPCOc7Alt0f6qUU0qIJqAxeoBYI/jFLmjmkCN1ZZhvpH8wSJhrn/F22dLqBx+dpn/SugdQpOjd1IEDy5645ptFOYWH5IgA='
+      body:
+        simple: <?xml version="1.0" encoding="UTF-8"?><computer_command><general><passcode>123456</passcode><lock_message></lock_message></general><computers><computer><id>138</id></computer></computers></computer_command>
+      headers:
+        keyvalue:
+        - key: Content-Type
+          value:
+            simple: application/xml
+        - key: Accept
+          value:
+            simple: application/xml
+      method:
+        simple: POST
+      parse_response_as:
+        simple: raw response
+      unsecure:
+        simple: "True"
+      url:
+        simple: https://paloaltonfr3.jamfcloud.com/JSSResource/computercommands/command/DeviceLock
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 720
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "3":
+    id: "3"
+    taskid: a0d73a1c-9788-4319-8781-99a80b495707
+    type: regular
+    task:
+      id: a0d73a1c-9788-4319-8781-99a80b495707
+      version: -1
+      name: Test Get request- Save to file
+      description: Sends http request
+      scriptName: HttpV2
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "7"
+    scriptarguments:
+      basic_auth:
+        simple: '{TOMMED}r+cjI/CfipIOrMc8hT3dXhsWIyth2MlGu8nPgDspL2v/lM/k0aUUguxrGUHXabjf3VXVXKsChhPDPJMwP9bPOviAYwbMTuCacsPXhYbz7BA='
+      filename:
+        simple: GetHttpFile
+      method:
+        simple: GET
+      parse_response_as:
+        simple: json
+      request_content_type:
+        simple: json
+      response_content_type:
+        simple: json
+      save_as_file:
+        simple: "yes"
+      unsecure:
+        simple: "True"
+      url:
+        simple: https://paloaltonfr3.jamfcloud.com/JSSResource/computers/id/1/subset/General
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 545
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "4":
+    id: "4"
+    taskid: 967bbde9-6cf7-4fc7-809f-e0eff9c6bfed
+    type: title
+    task:
+      id: 967bbde9-6cf7-4fc7-809f-e0eff9c6bfed
+      version: -1
+      name: Done
+      type: title
+      iscommand: false
+      brand: ""
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 1070
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "5":
+    id: "5"
+    taskid: fddafb51-0f59-4494-8c47-e6bb5c6fcd89
+    type: regular
+    task:
+      id: fddafb51-0f59-4494-8c47-e6bb5c6fcd89
+      version: -1
+      name: Test post - Save to file
+      description: Sends http request
+      scriptName: HttpV2
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    scriptarguments:
+      basic_auth:
+        simple: '{TOMMED}o9imer8fsN7tOheh0DNKtqYtnXsjWb7L+N6G0XvWNc1hXzc7sioF+aYkOVk5b/8kzlIljeOG6U1TuM8VRhOatdrkFm9IrBVv4WxlsDYpukw='
+      body:
+        simple: <?xml version="1.0" encoding="UTF-8"?><computer_command><general><passcode>123456</passcode><lock_message></lock_message></general><computers><computer><id>138</id></computer></computers></computer_command>
+      filename:
+        simple: PostHttpFile
+      headers:
+        keyvalue:
+        - key: Content-Type
+          value:
+            simple: application/xml
+        - key: Accept
+          value:
+            simple: application/xml
+      method:
+        simple: POST
+      parse_response_as:
+        simple: raw response
+      save_as_file:
+        simple: "yes"
+      unsecure:
+        simple: "True"
+      url:
+        simple: https://paloaltonfr3.jamfcloud.com/JSSResource/computercommands/command/DeviceLock
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 895
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "6":
+    id: "6"
+    taskid: 959b732d-795b-4e77-812c-07755c124175
+    type: regular
+    task:
+      id: 959b732d-795b-4e77-812c-07755c124175
+      version: -1
+      name: Delete context
+      description: |-
+        Delete field from context.
+
+        This automation runs using the default Limited User role, unless you explicitly change the permissions.
+        For more information, see the section about permissions here:
+        https://docs.paloaltonetworks.com/cortex/cortex-xsoar/6-2/cortex-xsoar-admin/playbooks/automations.html
+      scriptName: DeleteContext
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "1"
+      - "2"
+    scriptarguments:
+      all:
+        simple: "yes"
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 195
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "7":
+    id: "7"
+    taskid: 4eca4aaf-9cc1-401c-8e8e-df030202d7d5
+    type: regular
+    task:
+      id: 4eca4aaf-9cc1-401c-8e8e-df030202d7d5
+      version: -1
+      name: Test redirect=False
+      description: Sends http request
+      scriptName: HttpV2
+      type: regular
+      iscommand: false
+      brand: ""
+    nexttasks:
+      '#none#':
+      - "4"
+    scriptarguments:
+      enable_redirect:
+        simple: "False"
+      method:
+        simple: GET
+      parse_response_as:
+        simple: raw response
+      retry_on_status:
+        simple: "301"
+      url:
+        simple: https://ynet.co.il
+    separatecontext: false
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 720
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1085,
+        "width": 810,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
+inputs: []
+outputs: []
+fromversion: 6.5.0
+description: Test playbook for HttpV2 script.

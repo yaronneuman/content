@@ -175,3 +175,5 @@ timeout: '0'
 type: python
 dockerimage: demisto/python3:3.9.7.24076
 fromversion: 6.5.0
+tests:
+- HttpV2-test
