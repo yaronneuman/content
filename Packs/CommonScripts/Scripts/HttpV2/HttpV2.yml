@@ -36,24 +36,26 @@ args:
   secret: false
 - default: false
   description: |-
-    Specify the content type to use with the request. For example: application/json.
-    Mapped types are:
-    json  (application/json)
+    Specify the Content-Type header for the request.
+    Shorthands are provided for the following common content types:
+    json (application/json)
     xml (text/xml)
     form (application/x-www-form-urlencoded)
     data (multipart/form-data)
+    If you choose to define a different type, please include the full type name, e.g: application/pdf
   isArray: false
   name: request_content_type
   required: false
   secret: false
 - default: false
   description: |-
-    Choose how responses are converted into event data. For example: application/json.
-    Mapped types are:
-    json  (application/json)
+    Specify the Accept header for the request - the response content type.
+    Shorthands are provided for the following common content types:
+    json (application/json)
     xml (text/xml)
     form (application/x-www-form-urlencoded)
     data (multipart/form-data)
+    If you choose to define a different type, please include the full type name, e.g: application/pdf
   isArray: false
   name: response_content_type
   required: false
@@ -174,6 +176,6 @@ tags:
 timeout: '0'
 type: python
 dockerimage: demisto/python3:3.9.7.24076
-fromversion: 6.5.0
 tests:
 - HttpV2-test
+fromversion: 6.5.0
