@@ -1,22 +1,10 @@
-"""Base Script for Cortex XSOAR (aka Demisto)
-
-This is an empty script with some basic structure according
-to the code conventions.
-
-MAKE SURE YOU REVIEW/REPLACE ALL THE COMMENTS MARKED AS "TODO"
-
-Developer Documentation: https://xsoar.pan.dev/docs/welcome
-Code Conventions: https://xsoar.pan.dev/docs/integrations/code-conventions
-Linting: https://xsoar.pan.dev/docs/integrations/linting
-
-"""
-
 import demistomock as demisto
 from CommonServerPython import *
 from CommonServerUserPython import *
 
-from typing import Dict, Any
-import traceback
+from typing import Dict, List
+import json
+import xml.etree.ElementTree as ET
 
 CONTENT_TYPE_MAPPER = {
     "json": "application/json",
@@ -31,9 +19,9 @@ class Client(BaseClient):
 
         super().__init__(base_url=base_url, auth=auth, verify=verify, proxy=proxy)
 
-    def http_request(self, method: str, full_url: str = '', headers=None, resp_type='raw response', params=None,
-                     data=None, timeout=10, retries=0, status_list_to_retry=None, enable_redirect=False,
-                     raise_on_status=False):
+    def http_request(self, method: str, full_url: str = '', headers=None, resp_type='response', params=None,
+                     data=None, timeout=10, retries=0, status_list_to_retry=None, raise_on_status=False,
+                     allow_redirects=False):
         try:
             res = self._http_request(
                 method=method,
@@ -43,11 +31,11 @@ class Client(BaseClient):
                 timeout=timeout,
                 resp_type=resp_type,
                 status_list_to_retry=status_list_to_retry,
-                raise_on_redirect=enable_redirect,
                 raise_on_status=raise_on_status,
                 retries=retries,
                 data=data,
-                error_handler=self._generic_error_handler
+                error_handler=self._generic_error_handler,
+                allow_redirects=allow_redirects
             )
         except requests.exceptions.ConnectTimeout as exception:
             err_msg = 'Connection Timeout Error - potential reasons might be that the Server URL parameter' \
@@ -79,7 +67,8 @@ class Client(BaseClient):
             raise DemistoException(f"Bad gateway. Status code: {status_code}. Origin response from server: {res.text}")
 
 
-def create_headers(headers, request_content_type_header, response_content_type_header):
+def create_headers(headers: Dict, request_content_type_header: str, response_content_type_header: str) \
+        -> Dict[str, str]:
     if request_content_type_header in CONTENT_TYPE_MAPPER.keys():
         request_content_type_header = CONTENT_TYPE_MAPPER[request_content_type_header]
     if response_content_type_header in CONTENT_TYPE_MAPPER.keys():
@@ -92,11 +81,27 @@ def create_headers(headers, request_content_type_header, response_content_type_h
     return headers
 
 
-def save_res_to_file(res, file_name):
+def save_res_to_file(res: str, file_name: str):
     return return_results(fileResult(file_name, res))
 
 
-def get_status_list(status_list):
+def str_parsed_response(res: str, parse_response_as: str) -> str:
+    if parse_response_as == 'json':
+        res = json.dumps(res)
+    else:
+        res = str(res)
+    return res
+
+
+def get_parsed_response(res, parse_response_as) -> Dict:
+    if parse_response_as == 'json':
+        parsed_res = res
+    else:
+        parsed_res = str(res)
+    return {'Results': parsed_res}
+
+
+def get_status_list(status_list: List) -> List[int]:
     final_status_list = []
     for status in status_list:
         range_numbers = status.split('-')
@@ -105,7 +110,6 @@ def get_status_list(status_list):
         else:
             status_range = list(range(int(range_numbers[0]), int(range_numbers[1]) + 1))
             final_status_list.extend(status_range)
-    print(final_status_list)
     return final_status_list
 
 
@@ -114,20 +118,19 @@ def get_status_list(status_list):
 
 def main(args: Dict):
     method = args.get('method', '')
-    url = args.get('url', '')
+    full_url = args.get('url', '')
     body = args.get('body', '')
     request_content_type = args.get('request_content_type', '')
     response_content_type = args.get('response_content_type', '')
-    parse_response_as = args.get('parse_response_as', 'raw response')
+    parse_response_as = args.get('parse_response_as', 'raw_response')
+    params = args.get('params', {})
     headers = args.get('headers', {})
     headers = create_headers(headers, request_content_type, response_content_type)
     auth = tuple(argToList(args.get('basic_auth', None)))
-    # username = args.get('username', '')
-    # password = args.get('password', '')
     save_as_file = args.get('save_as_file', 'no')
     file_name = args.get('filename', 'http-file')
-    enable_redirect = argToBoolean(args.get('enable_redirect', False))
-    timeout = arg_to_number(args.get('timeout', ''))
+    enable_redirect = argToBoolean(args.get('enable_redirect', True))
+    timeout = arg_to_number(args.get('timeout', 10))
     retry_on_status = args.get('retry_on_status', None)
     raise_on_status = True if retry_on_status else False
     retry_status_list = get_status_list(argToList(retry_on_status))
@@ -135,20 +138,40 @@ def main(args: Dict):
     proxy = argToBoolean(args.get('proxy', False))
     verify = argToBoolean(not args.get('unsecure', False))
 
-    client = Client(base_url=url, auth=auth, verify=verify, proxy=proxy)
+    client = Client(base_url=full_url, auth=auth, verify=verify, proxy=proxy)
+    kwargs = {
+        'method': method,
+        'full_url': full_url,
+        'headers': headers,
+        'data': body,
+        'timeout': timeout,
+        'params': params,
+        'resp_type': parse_response_as
+    }
+    if raise_on_status:
+        kwargs.update({
+            'retries': retry_count,
+            'status_list_to_retry': retry_status_list,
+            'raise_on_status': raise_on_status
+        })
+    if not enable_redirect:
+        kwargs.update({
+            'allow_redirects': enable_redirect
+        })
 
-    if enable_redirect or raise_on_status:
-        res = client.http_request(method=method, full_url=url, headers=headers, data=body, timeout=timeout,
-                                  retries=retry_count, enable_redirect=enable_redirect, resp_type=parse_response_as,
-                                  status_list_to_retry=retry_status_list, raise_on_status=raise_on_status)
-    else:
-        res = client.http_request(method=method, full_url=url, headers=headers, data=body, timeout=timeout,
-                                  resp_type=parse_response_as)
+    res = client.http_request(**kwargs)
+    str_parsed_res = str_parsed_response(res, parse_response_as)
+    dict_parsed_res = get_parsed_response(res, parse_response_as)
 
     if save_as_file == 'yes':
-        save_res_to_file(res, file_name)
+        save_res_to_file(str_parsed_res, file_name)
 
-    return res
+    return CommandResults(
+        readable_output=f"Sent a {method} request to {full_url}",
+        outputs_prefix='HttpV2',
+        outputs=dict_parsed_res,
+        raw_response=dict_parsed_res
+    )
 
 
 if __name__ in ('__main__', '__builtin__', 'builtins'):

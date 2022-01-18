@@ -22,33 +22,45 @@ args:
   secret: false
 - default: false
   description: Specify a hash of headers to send with the request.
+  type: keyValue
   isArray: false
   name: headers
   required: false
   secret: false
 - default: false
   description: Specify the body of the request.
+  type: textArea
   isArray: false
   name: body
   required: false
   secret: false
 - default: false
-  description: Specify the content type to use with the request.
+  description: |-
+    Specify the content type to use with the request. For example: application/json.
+    Mapped types are:
+    json  (application/json)
+    xml (text/xml)
+    form (application/x-www-form-urlencoded)
+    data (multipart/form-data)
   isArray: false
   name: request_content_type
-  predefined:
-  - ''
   required: false
   secret: false
 - default: false
-  description: Choose how responses are converted into event data.
+  description: |-
+    Choose how responses are converted into event data. For example: application/json.
+    Mapped types are:
+    json  (application/json)
+    xml (text/xml)
+    form (application/x-www-form-urlencoded)
+    data (multipart/form-data)
   isArray: false
   name: response_content_type
   required: false
   secret: false
 - auto: PREDEFINED
   default: false
-  defaultValue: raw response
+  defaultValue: raw_response
   description: Specify how you would like to parse the response.
   isArray: false
   name: parse_response_as
@@ -56,7 +68,20 @@ args:
   - text
   - json
   - xml
-  - raw response
+  - raw_response
+  required: false
+  secret: false
+- default: false
+  description: 'The request authorization, for example: (username, password)'
+  isArray: false
+  name: basic_auth
+  required: false
+  secret: true
+- default: false
+  description: URL parameters to specify the query.
+  type: keyValue
+  isArray: false
+  name: params
   required: false
   secret: false
 - default: false
@@ -69,8 +94,8 @@ args:
   secret: false
 - auto: PREDEFINED
   default: false
-  defaultValue: 'False'
-  description: enable_redirect
+  defaultValue: 'True'
+  description: The request will be called again with the new URL.
   isArray: false
   name: enable_redirect
   predefined:
@@ -91,22 +116,10 @@ args:
   name: retry_count
   required: false
   secret: false
-- default: false
-  description: username
-  isArray: false
-  name: username
-  required: false
-  secret: false
-- default: false
-  description: password
-  isArray: false
-  name: password
-  required: false
-  secret: false
 - auto: PREDEFINED
   default: false
   defaultValue: 'no'
-  description: save_as_file
+  description: Save the response in a file.
   isArray: false
   name: save_as_file
   predefined:
@@ -123,6 +136,7 @@ args:
   secret: false
 - auto: PREDEFINED
   default: false
+  defaultValue: 'False'
   description: Trust any certificate (not secure)
   isArray: false
   name: unsecure
@@ -142,12 +156,6 @@ args:
   - 'False'
   required: false
   secret: false
-- default: false
-  description: 'The request authorization, for example: (username, password)'
-  isArray: false
-  name: basic_auth
-  required: false
-  secret: false
 comment: Sends http request
 commonfields:
   id: HttpV2
@@ -155,8 +163,8 @@ commonfields:
 enabled: false
 name: HttpV2
 outputs:
-- contextPath: Http.File
-  description: '[Enter a description of the data returned in this output.]'
+- contextPath: HttpV2
+  description: The response  of the Http request.
   type: String
 script: '-'
 subtype: python3
@@ -166,4 +174,4 @@ tags:
 timeout: '0'
 type: python
 dockerimage: demisto/python3:3.9.7.24076
-fromversion: 6.0.0
+fromversion: 6.5.0
