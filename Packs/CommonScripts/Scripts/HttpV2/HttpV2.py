@@ -18,9 +18,9 @@ class Client(BaseClient):
 
         super().__init__(base_url=base_url, auth=auth, verify=verify, proxy=proxy)
 
-    def http_request(self, method: str, full_url: str = '', headers=None, resp_type='response', params=None,
+    def http_request(self, method: str, full_url: str = '', headers=None, resp_type='raw_response', params=None,
                      data=None, timeout=10, retries=0, status_list_to_retry=None, raise_on_status=False,
-                     allow_redirects=False):
+                     allow_redirects=True):
         try:
             res = self._http_request(
                 method=method,
@@ -167,7 +167,7 @@ def main(args: Dict):
 
     return CommandResults(
         readable_output=f"Sent a {method} request to {full_url}",
-        outputs_prefix='HttpV2',
+        outputs_prefix='HttpRequest.Response',
         outputs=dict_parsed_res,
         raw_response=dict_parsed_res
     )

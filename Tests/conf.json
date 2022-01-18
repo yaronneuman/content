@@ -4502,6 +4502,13 @@
             ]
         },
         {
+            "playbookID": "HttpV2-test",
+            "fromversion": "6.5.0",
+            "scripts": [
+                "HttpV2"
+            ]
+        },
+        {
             "playbookID": "GCS Bucket Management - Test",
             "fromversion": "5.0.0",
             "integrations": [

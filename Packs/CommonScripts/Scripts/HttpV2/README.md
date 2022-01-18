@@ -18,8 +18,8 @@ Sends http request
 | method | Specify the HTTP method to use. |
 | headers | Specify a hash of headers to send with the request. |
 | body | Specify the body of the request. |
-| request_content_type | Specify the content type to use with the request. For example: application/json.<br/>Mapped types are:<br/>json  \(application/json\)<br/>xml \(text/xml\)<br/>form \(application/x-www-form-urlencoded\)<br/>data \(multipart/form-data\) |
-| response_content_type | Choose how responses are converted into event data. For example: application/json.<br/>Mapped types are:<br/>json  \(application/json\)<br/>xml \(text/xml\)<br/>form \(application/x-www-form-urlencoded\)<br/>data \(multipart/form-data\) |
+| request_content_type | Specify the Content-Type header for the request.<br/>Shorthands are provided for the following common content types:<br/>json \(application/json\)<br/>xml \(text/xml\)<br/>form \(application/x-www-form-urlencoded\)<br/>data \(multipart/form-data\)<br/>If you choose to define a different type, please include the full type name, e.g: application/pdf |
+| response_content_type | Specify the Accept header for the request - the response content type.<br/>Shorthands are provided for the following common content types:<br/>json \(application/json\)<br/>xml \(text/xml\)<br/>form \(application/x-www-form-urlencoded\)<br/>data \(multipart/form-data\)<br/>If you choose to define a different type, please include the full type name, e.g: application/pdf |
 | parse_response_as | Specify how you would like to parse the response. |
 | basic_auth | The request authorization, for example: \(username, password\) |
 | params | URL parameters to specify the query. |
@@ -37,7 +37,7 @@ Sends http request
 
 | **Path** | **Description** | **Type** |
 | --- | --- | --- |
-| HttpV2 | The response  of the Http request. | String |
+| HttpRequest.Response | The response  of the Http request. | String |
 
 
 ## Script Examples
@@ -61,7 +61,7 @@ Sends http request
                     "initial_entry_date": "2021-03-29",
                     "initial_entry_date_epoch": 1617021852322,
                     "initial_entry_date_utc": "2021-03-29T12:44:12.322+0000",
-                    "ip_address": "111.243.192.20",
+                    "ip_address": "200.200.200.200",
                     "itunes_store_account_is_active": false,
                     "jamf_version": "9.6.29507.c",
                     "last_cloud_backup_date_epoch": 0,

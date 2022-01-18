@@ -165,7 +165,7 @@ commonfields:
 enabled: false
 name: HttpV2
 outputs:
-- contextPath: HttpV2
+- contextPath: HttpRequest.Response
   description: The response  of the Http request.
   type: String
 script: '-'
