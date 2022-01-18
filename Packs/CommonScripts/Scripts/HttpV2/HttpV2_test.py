@@ -58,4 +58,3 @@ def test_create_headers(headers, request_content_type_header, response_content_t
 
     output = create_headers(headers, request_content_type_header, response_content_type_header)
     assert output == expected_headers
-

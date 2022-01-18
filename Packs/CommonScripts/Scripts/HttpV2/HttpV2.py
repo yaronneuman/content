@@ -4,7 +4,6 @@ from CommonServerUserPython import *
 
 from typing import Dict, List
 import json
-import xml.etree.ElementTree as ET
 
 CONTENT_TYPE_MAPPER = {
     "json": "application/json",
