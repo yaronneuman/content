@@ -33,10 +33,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "1":
     id: "1"
-    taskid: 56a5be4f-a9db-4172-889d-0de03e3222d3
+    taskid: a05cac5e-4553-46f3-874a-050797fc146e
     type: regular
     task:
-      id: 56a5be4f-a9db-4172-889d-0de03e3222d3
+      id: a05cac5e-4553-46f3-874a-050797fc146e
       version: -1
       name: Test Get request
       description: Sends http request
@@ -46,10 +46,10 @@ tasks:
       brand: ""
     nexttasks:
       '#none#':
-      - "3"
+      - "8"
     scriptarguments:
-      basic_auth:
-        simple: '{TOMMED}MGO8fN35aG5DgDw7JJlDEBlaPvDBNqtPncD3xdlx1Bs2OCZj+L/+2BEN/9gay32VbYimMHdCl/XAymQ4wJYFLv5DlAwB/yypnnwpzNYPoEk='
+      auth_credentials:
+        simple: '{TOMMED}FhtvS7cdH+LMV8yTAeHOdU8iPTe/x8ZSwHfC/zdHYb5Nvtb+om+e5QpV0FB8eYnfynIzJB8alBjUalFRYZT9xZWwfNq7vKQJdDtWfWjx+Jo='
       method:
         simple: GET
       parse_response_as:
@@ -79,10 +79,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "2":
     id: "2"
-    taskid: 1437571a-abaa-43f9-8235-a7344435d5a9
+    taskid: ecca6558-3d4f-48c7-84b9-ffe39a432ed2
     type: regular
     task:
-      id: 1437571a-abaa-43f9-8235-a7344435d5a9
+      id: ecca6558-3d4f-48c7-84b9-ffe39a432ed2
       version: -1
       name: Test post XML body request
       description: Sends http request
@@ -92,10 +92,10 @@ tasks:
       brand: ""
     nexttasks:
       '#none#':
-      - "5"
+      - "10"
     scriptarguments:
-      basic_auth:
-        simple: '{TOMMED}zz0lhDtmhR+FqBPCOc7Alt0f6qUU0qIJqAxeoBYI/jFLmjmkCN1ZZhvpH8wSJhrn/F22dLqBx+dpn/SugdQpOjd1IEDy5645ptFOYWH5IgA='
+      auth_credentials:
+        simple: '{TOMMED}acG2SOBWw7D1BLXQ9YFqEi5xcgfuwSaiQuu/J1FCGm3zOdHXl7EvZtyAUe6jlSH2tu3nxxH2aML4S7MKiY3ZpHFQm3IzEp2egcHkXWim3FA='
       body:
         simple: <?xml version="1.0" encoding="UTF-8"?><computer_command><general><passcode>123456</passcode><lock_message></lock_message></general><computers><computer><id>138</id></computer></computers></computer_command>
       headers:
@@ -109,7 +109,7 @@ tasks:
       method:
         simple: POST
       parse_response_as:
-        simple: raw response
+        simple: xml
       unsecure:
         simple: "True"
       url:
@@ -131,10 +131,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "3":
     id: "3"
-    taskid: a0d73a1c-9788-4319-8781-99a80b495707
+    taskid: 3ddb38ba-a2b5-4c51-8c8a-9542497a7b3a
     type: regular
     task:
-      id: a0d73a1c-9788-4319-8781-99a80b495707
+      id: 3ddb38ba-a2b5-4c51-8c8a-9542497a7b3a
       version: -1
       name: Test Get request- Save to file
       description: Sends http request
@@ -146,8 +146,8 @@ tasks:
       '#none#':
       - "7"
     scriptarguments:
-      basic_auth:
-        simple: '{TOMMED}r+cjI/CfipIOrMc8hT3dXhsWIyth2MlGu8nPgDspL2v/lM/k0aUUguxrGUHXabjf3VXVXKsChhPDPJMwP9bPOviAYwbMTuCacsPXhYbz7BA='
+      auth_credentials:
+        simple: '{TOMMED}68swNPemf7OkNIGeISuEJx57ZHOAOudaPUbXR+YiY03rAiN+ITRMdAT+hafRu+C9AUCE7+zFfwSaJIS3ALxpIL/XEJSBKglhK18qhTOs76g='
       filename:
         simple: GetHttpFile
       method:
@@ -169,7 +169,7 @@ tasks:
       {
         "position": {
           "x": 480,
-          "y": 545
+          "y": 720
         }
       }
     note: false
@@ -195,7 +195,7 @@ tasks:
       {
         "position": {
           "x": 265,
-          "y": 1070
+          "y": 1245
         }
       }
     note: false
@@ -207,10 +207,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "5":
     id: "5"
-    taskid: fddafb51-0f59-4494-8c47-e6bb5c6fcd89
+    taskid: fecfc142-fff6-4b6e-83be-d4bb86640965
     type: regular
     task:
-      id: fddafb51-0f59-4494-8c47-e6bb5c6fcd89
+      id: fecfc142-fff6-4b6e-83be-d4bb86640965
       version: -1
       name: Test post - Save to file
       description: Sends http request
@@ -222,8 +222,8 @@ tasks:
       '#none#':
       - "4"
     scriptarguments:
-      basic_auth:
-        simple: '{TOMMED}o9imer8fsN7tOheh0DNKtqYtnXsjWb7L+N6G0XvWNc1hXzc7sioF+aYkOVk5b/8kzlIljeOG6U1TuM8VRhOatdrkFm9IrBVv4WxlsDYpukw='
+      auth_credentials:
+        simple: '{TOMMED}gC7MVE/7INNc8NKffp8V0BnRiGGprfp7J+N4fYjlzdQdpXKOnk0t3YznmBEAhlmfgCb1CNVa/XL0MW+j6pSt1PXXx3J0KRV1wyhWw9/y/O8='
       body:
         simple: <?xml version="1.0" encoding="UTF-8"?><computer_command><general><passcode>123456</passcode><lock_message></lock_message></general><computers><computer><id>138</id></computer></computers></computer_command>
       filename:
@@ -239,7 +239,7 @@ tasks:
       method:
         simple: POST
       parse_response_as:
-        simple: raw response
+        simple: xml
       save_as_file:
         simple: "yes"
       unsecure:
@@ -251,7 +251,7 @@ tasks:
       {
         "position": {
           "x": 50,
-          "y": 895
+          "y": 1070
         }
       }
     note: false
@@ -303,10 +303,10 @@ tasks:
     isautoswitchedtoquietmode: false
   "7":
     id: "7"
-    taskid: 4eca4aaf-9cc1-401c-8e8e-df030202d7d5
+    taskid: 4114cff9-5923-4533-8291-d1576b88497e
     type: regular
     task:
-      id: 4eca4aaf-9cc1-401c-8e8e-df030202d7d5
+      id: 4114cff9-5923-4533-8291-d1576b88497e
       version: -1
       name: Test redirect=False
       description: Sends http request
@@ -316,7 +316,7 @@ tasks:
       brand: ""
     nexttasks:
       '#none#':
-      - "4"
+      - "9"
     scriptarguments:
       enable_redirect:
         simple: "False"
@@ -324,8 +324,6 @@ tasks:
         simple: GET
       parse_response_as:
         simple: raw response
-      retry_on_status:
-        simple: "301"
       url:
         simple: https://ynet.co.il
     separatecontext: false
@@ -333,7 +331,127 @@ tasks:
       {
         "position": {
           "x": 480,
-          "y": 720
+          "y": 895
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "8":
+    id: "8"
+    taskid: 53b5c6f4-8adb-4a67-8b59-926b4e598a66
+    type: condition
+    task:
+      id: 53b5c6f4-8adb-4a67-8b59-926b4e598a66
+      version: -1
+      name: Verify Outputs
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "3"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isEqualString
+          left:
+            value:
+              simple: HttpRequest.Response.StatusCode
+            iscontext: true
+          right:
+            value:
+              simple: "200"
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 545
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "9":
+    id: "9"
+    taskid: f46ab4c7-a587-4108-8fbd-3c3b760f67b5
+    type: condition
+    task:
+      id: f46ab4c7-a587-4108-8fbd-3c3b760f67b5
+      version: -1
+      name: Verify Outputs
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "4"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isEqualString
+          left:
+            value:
+              simple: HttpRequest.Response.StatusCode
+            iscontext: true
+          right:
+            value:
+              simple: "302"
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1070
+        }
+      }
+    note: false
+    timertriggers: []
+    ignoreworker: false
+    skipunavailable: false
+    quietmode: 0
+    isoversize: false
+    isautoswitchedtoquietmode: false
+  "10":
+    id: "10"
+    taskid: 3521a5ac-0b10-487b-86f1-f59f555abc3d
+    type: condition
+    task:
+      id: 3521a5ac-0b10-487b-86f1-f59f555abc3d
+      version: -1
+      name: Verify Outputs
+      type: condition
+      iscommand: false
+      brand: ""
+    nexttasks:
+      "yes":
+      - "5"
+    separatecontext: false
+    conditions:
+    - label: "yes"
+      condition:
+      - - operator: isEqualString
+          left:
+            value:
+              simple: HttpRequest.Response.StatusCode
+            iscontext: true
+          right:
+            value:
+              simple: "201"
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 895
         }
       }
     note: false
@@ -348,7 +466,7 @@ view: |-
     "linkLabelsPosition": {},
     "paper": {
       "dimensions": {
-        "height": 1085,
+        "height": 1260,
         "width": 810,
         "x": 50,
         "y": 50

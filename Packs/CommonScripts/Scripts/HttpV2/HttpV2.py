@@ -12,13 +12,15 @@ CONTENT_TYPE_MAPPER = {
     "data": "multipart/form-data"
 }
 
+RAW_RESPONSE = 'raw_response'
+
 
 class Client(BaseClient):
     def __init__(self, base_url: str, auth: tuple, verify: bool, proxy: bool):
 
         super().__init__(base_url=base_url, auth=auth, verify=verify, proxy=proxy)
 
-    def http_request(self, method: str, full_url: str = '', headers=None, resp_type='raw_response', params=None,
+    def http_request(self, method: str, full_url: str = '', headers=None, resp_type=RAW_RESPONSE, params=None,
                      data=None, timeout=10, retries=0, status_list_to_retry=None, raise_on_status=False,
                      allow_redirects=True):
         try:
@@ -68,6 +70,15 @@ class Client(BaseClient):
 
 def create_headers(headers: Dict, request_content_type_header: str, response_content_type_header: str) \
         -> Dict[str, str]:
+    """
+    Args:
+        headers: The headers the user insert.
+        request_content_type_header: The content type header.
+        response_content_type_header: The response type header.
+
+    Returns:
+        A dictionary of headers to send in the request.
+    """
     if request_content_type_header in CONTENT_TYPE_MAPPER.keys():
         request_content_type_header = CONTENT_TYPE_MAPPER[request_content_type_header]
     if response_content_type_header in CONTENT_TYPE_MAPPER.keys():
@@ -80,27 +91,30 @@ def create_headers(headers: Dict, request_content_type_header: str, response_con
     return headers
 
 
-def save_res_to_file(res: str, file_name: str):
-    return return_results(fileResult(file_name, res))
+def get_parsed_response(res, resp_type: str) -> Dict:
+    try:
+        resp_type = resp_type.lower()
+        if resp_type == 'json':
+            res = res.json()
+        elif resp_type == 'text':
+            res = res.text
+        elif resp_type == 'xml':
+            res = json.loads(xml2json(res.content))
+        else:
+            res = str(res)
+        return res
+    except ValueError as exception:
+        raise DemistoException('Failed to parse json object from response: {}'
+                               .format(res.content), exception)
 
 
-def str_parsed_response(res: str, parse_response_as: str) -> str:
-    if parse_response_as == 'json':
-        res = json.dumps(res)
-    else:
-        res = str(res)
-    return res
-
-
-def get_parsed_response(res, parse_response_as) -> Dict:
-    if parse_response_as == 'json':
-        parsed_res = res
-    else:
-        parsed_res = str(res)
-    return {'Results': parsed_res}
-
-
-def get_status_list(status_list: List) -> List[int]:
+def get_status_list(status_list: list) -> List[int]:
+    """
+    Args:
+        status_list: The given status list.
+    Returns:
+        A list of statuses to retry.
+    """
     final_status_list = []
     for status in status_list:
         range_numbers = status.split('-')
@@ -112,6 +126,15 @@ def get_status_list(status_list: List) -> List[int]:
     return final_status_list
 
 
+def build_outputs(parsed_res, res) -> Dict:
+    return {'ParsedBody': parsed_res,
+            'Body': res.text,
+            'StatusCode': res.status_code,
+            'StatusText': res.reason,
+            'URL': res.url,
+            'Headers': dict(res.headers)}
+
+
 ''' MAIN FUNCTION '''
 
 
@@ -121,11 +144,11 @@ def main(args: Dict):
     body = args.get('body', '')
     request_content_type = args.get('request_content_type', '')
     response_content_type = args.get('response_content_type', '')
-    parse_response_as = args.get('parse_response_as', 'raw_response')
+    parse_response_as = args.get('parse_response_as', RAW_RESPONSE)
     params = args.get('params', {})
     headers = args.get('headers', {})
     headers = create_headers(headers, request_content_type, response_content_type)
-    auth = tuple(argToList(args.get('basic_auth', None)))
+    auth = tuple(argToList(args.get('auth_credentials', None)))
     save_as_file = args.get('save_as_file', 'no')
     file_name = args.get('filename', 'http-file')
     enable_redirect = argToBoolean(args.get('enable_redirect', True))
@@ -145,7 +168,6 @@ def main(args: Dict):
         'data': body,
         'timeout': timeout,
         'params': params,
-        'resp_type': parse_response_as
     }
     if raise_on_status:
         kwargs.update({
@@ -159,17 +181,18 @@ def main(args: Dict):
         })
 
     res = client.http_request(**kwargs)
-    str_parsed_res = str_parsed_response(res, parse_response_as)
-    dict_parsed_res = get_parsed_response(res, parse_response_as)
+    parsed_res = get_parsed_response(res, parse_response_as)
 
     if save_as_file == 'yes':
-        save_res_to_file(str_parsed_res, file_name)
+        return fileResult(file_name, res.content)
+
+    outputs = build_outputs(parsed_res, res)
 
     return CommandResults(
         readable_output=f"Sent a {method} request to {full_url}",
         outputs_prefix='HttpRequest.Response',
-        outputs=dict_parsed_res,
-        raw_response=dict_parsed_res
+        outputs=outputs,
+        raw_response={'data': parsed_res}
     )
 
 
