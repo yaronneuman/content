@@ -22,7 +22,7 @@ class Client(BaseClient):
 
     def http_request(self, method: str, full_url: str = '', headers=None, resp_type=RAW_RESPONSE, params=None,
                      data=None, timeout=10, retries=0, status_list_to_retry=None, raise_on_status=False,
-                     allow_redirects=True):
+                     allow_redirects=True, backoff_factor=5):
         try:
             res = self._http_request(
                 method=method,
@@ -36,7 +36,8 @@ class Client(BaseClient):
                 retries=retries,
                 data=data,
                 error_handler=self._generic_error_handler,
-                allow_redirects=allow_redirects
+                allow_redirects=allow_redirects,
+                backoff_factor=backoff_factor
             )
         except requests.exceptions.ConnectTimeout as exception:
             err_msg = 'Connection Timeout Error - potential reasons might be that the Server URL parameter' \
@@ -101,7 +102,7 @@ def get_parsed_response(res, resp_type: str) -> Dict:
         elif resp_type == 'xml':
             res = json.loads(xml2json(res.content))
         else:
-            res = str(res)
+            res = res.text
         return res
     except ValueError as exception:
         raise DemistoException('Failed to parse json object from response: {}'
@@ -156,6 +157,7 @@ def main(args: Dict):
     retry_on_status = args.get('retry_on_status', None)
     raise_on_status = True if retry_on_status else False
     retry_status_list = get_status_list(argToList(retry_on_status))
+    timeout_between_retries = args.get('timeout_between_retries', 5)
     retry_count = arg_to_number(args.get('retry_count', 3))
     proxy = argToBoolean(args.get('proxy', False))
     verify = argToBoolean(not args.get('unsecure', False))
@@ -168,6 +170,7 @@ def main(args: Dict):
         'data': body,
         'timeout': timeout,
         'params': params,
+        'backoff_factor': timeout_between_retries
     }
     if raise_on_status:
         kwargs.update({

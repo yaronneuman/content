@@ -119,6 +119,13 @@ args:
   name: retry_count
   required: false
   secret: false
+- default: false
+  defaultValue: '5'
+  description: Specify the timeout between each retry in seconds. Defaults to 5.
+  isArray: false
+  name: timeout_between_retries
+  required: false
+  secret: false
 - auto: PREDEFINED
   default: false
   defaultValue: 'no'
