@@ -27,6 +27,7 @@ Sends http request
 | enable_redirect | The request will be called again with the new URL. |
 | retry_on_status |  Specify the array of status codes that should cause a retry. For example: 301-303,400,402.  |
 | retry_count | How many retries should be made in case of a failure. |
+| timeout_between_retries | Specify the timeout between each retry in seconds. Defaults to 5. |
 | save_as_file | Save the response in a file. |
 | filename | filename |
 | unsecure | Trust any certificate \(not secure\) |
