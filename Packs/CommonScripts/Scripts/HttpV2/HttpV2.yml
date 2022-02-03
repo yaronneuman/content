@@ -183,7 +183,7 @@ outputs:
   description: The URL of the response
   type: String
 - contextPath: HttpRequest.Response.ParsedBody
-  description: The parsed reponse, acoording to `parse_response_as` argument.
+  description: The parsed response, according to `parse_response_as` argument.
   type: String
 - contextPath: HttpRequest.Response.Headers
   description: The response headers.

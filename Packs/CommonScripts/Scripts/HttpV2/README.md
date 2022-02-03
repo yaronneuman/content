@@ -41,7 +41,7 @@ Sends http request
 | HttpRequest.Response.StatusCode | The number that indicates the status of the request. | String |
 | HttpRequest.Response.StatusText | The text corresponding to the status code | String |
 | HttpRequest.Response.URL | The URL of the response | String |
-| HttpRequest.Response.ParsedBody | The parsed reponse, acoording to \`parse_response_as\` argument. | String |
+| HttpRequest.Response.ParsedBody | The parsed response, according to \`parse_response_as\` argument. | String |
 | HttpRequest.Response.Headers | The response headers. | String |
 | HttpRequest.Response.Body | The response data. | Unknown |
 
