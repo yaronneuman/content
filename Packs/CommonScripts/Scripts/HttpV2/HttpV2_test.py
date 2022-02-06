@@ -32,9 +32,9 @@ def test_get_status_list(status_list, expected_output):
     Then
         - Get a list of status codes for the status range the user entered.
     """
-    from HttpV2 import get_status_list
+    from HttpV2 import format_status_list
 
-    output = get_status_list(status_list)
+    output = format_status_list(status_list)
     assert output == expected_output
 
 

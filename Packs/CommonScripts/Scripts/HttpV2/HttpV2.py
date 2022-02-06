@@ -72,6 +72,7 @@ class Client(BaseClient):
 def create_headers(headers: Dict, request_content_type_header: str, response_content_type_header: str) \
         -> Dict[str, str]:
     """
+    Create a dictionary of headers. It will map the header if it exists in the CONTENT_TYPE_MAPPER.
     Args:
         headers: The headers the user insert.
         request_content_type_header: The content type header.
@@ -109,8 +110,9 @@ def get_parsed_response(res, resp_type: str) -> Dict:
                                .format(res.content), exception)
 
 
-def get_status_list(status_list: list) -> List[int]:
+def format_status_list(status_list: list) -> List[int]:
     """
+    Get a status list and format it to a range of status numbers.
     Args:
         status_list: The given status list.
     Returns:
@@ -152,11 +154,7 @@ def main(args: Dict):
     auth = tuple(argToList(args.get('auth_credentials', None)))
     save_as_file = args.get('save_as_file', 'no')
     file_name = args.get('filename', 'http-file')
-    enable_redirect = argToBoolean(args.get('enable_redirect', True))
     timeout = arg_to_number(args.get('timeout', 10))
-    retry_on_status = args.get('retry_on_status', None)
-    raise_on_status = True if retry_on_status else False
-    retry_status_list = get_status_list(argToList(retry_on_status))
     timeout_between_retries = args.get('timeout_between_retries', 5)
     retry_count = arg_to_number(args.get('retry_count', 3))
     proxy = argToBoolean(args.get('proxy', False))
@@ -172,12 +170,20 @@ def main(args: Dict):
         'params': params,
         'backoff_factor': timeout_between_retries
     }
+
+    retry_on_status = args.get('retry_on_status', None)
+    raise_on_status = True if retry_on_status else False
+    retry_status_list = format_status_list(argToList(retry_on_status))
+
     if raise_on_status:
         kwargs.update({
             'retries': retry_count,
             'status_list_to_retry': retry_status_list,
             'raise_on_status': raise_on_status
         })
+
+    enable_redirect = argToBoolean(args.get('enable_redirect', True))
+
     if not enable_redirect:
         kwargs.update({
             'allow_redirects': enable_redirect
