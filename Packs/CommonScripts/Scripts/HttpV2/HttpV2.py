@@ -98,8 +98,6 @@ def get_parsed_response(res, resp_type: str) -> Dict:
         resp_type = resp_type.lower()
         if resp_type == 'json':
             res = res.json()
-        elif resp_type == 'text':
-            res = res.text
         elif resp_type == 'xml':
             res = json.loads(xml2json(res.content))
         else:
@@ -113,6 +111,9 @@ def get_parsed_response(res, resp_type: str) -> Dict:
 def format_status_list(status_list: list) -> List[int]:
     """
     Get a status list and format it to a range of status numbers.
+    Example:
+        given: ['400-404',500,501]
+        return: [400,401,402,403,500,501]
     Args:
         status_list: The given status list.
     Returns:
@@ -120,12 +121,13 @@ def format_status_list(status_list: list) -> List[int]:
     """
     final_status_list = []
     for status in status_list:
-        range_numbers = status.split('-')
-        if len(range_numbers) == 1:
-            final_status_list.append(int(range_numbers[0]))
-        else:
+        # Checks if the status is a range of statuses
+        if '-' in status:
+            range_numbers = status.split('-')
             status_range = list(range(int(range_numbers[0]), int(range_numbers[1]) + 1))
             final_status_list.extend(status_range)
+        elif status.isdigit():
+            final_status_list.append(int(status))
     return final_status_list
 
 
