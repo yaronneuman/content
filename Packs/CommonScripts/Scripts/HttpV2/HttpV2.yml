@@ -22,14 +22,12 @@ args:
   secret: false
 - default: false
   description: Specify a hash of headers to send with the request.
-  type: keyValue
   isArray: false
   name: headers
   required: false
   secret: false
 - default: false
   description: Specify the body of the request.
-  type: textArea
   isArray: false
   name: body
   required: false
@@ -82,7 +80,6 @@ args:
   secret: true
 - default: false
   description: URL parameters to specify the query.
-  type: keyValue
   isArray: false
   name: params
   required: false
@@ -107,7 +104,8 @@ args:
   required: false
   secret: false
 - default: false
-  description: ' Specify the array of status codes that should cause a retry. For example: 301-303,400,402.'
+  description: ' Specify the array of status codes that should cause a retry. For
+    example: 301-303,400,402.'
   isArray: false
   name: retry_on_status
   required: false
@@ -198,7 +196,7 @@ tags:
 - basescript
 timeout: '0'
 type: python
-dockerimage: demisto/python3:3.9.7.24076
+dockerimage: demisto/python3:3.10.1.25933
 tests:
 - HttpV2-test
 fromversion: 6.5.0
