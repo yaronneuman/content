@@ -1,20 +1,47 @@
 {
-    "name": "Zscaler Internet Access",
-    "description": "Zscaler is a cloud security solution built for performance and flexible scalability.",
-    "support": "xsoar",
-    "currentVersion": "1.1.16",
-    "author": "Cortex XSOAR",
-    "url": "https://www.paloaltonetworks.com/cortex",
-    "email": "",
-    "created": "2020-03-10T08:37:18Z",
-    "categories": [
-        "Network Security"
+  "name": "Zscaler Internet Access",
+  "description": "Zscaler is a cloud security solution built for performance and flexible scalability.",
+  "support": "xsoar",
+  "currentVersion": "1.1.16",
+  "author": "Cortex XSOAR",
+  "url": "https://www.paloaltonetworks.com/cortex",
+  "email": "",
+  "created": "2020-03-10T08:37:18Z",
+  "categories": [
+    "Network Security"
+  ],
+  "tags": [],
+  "useCases": [],
+  "keywords": [],
+  "marketplaces": [
+    "xsoar",
+    "marketplacev2"
+  ],
+  "xsiam": {
+    "datasets": [
+      {
+        "name": "zscaler_firewall_log",
+        "samples": {
+          "raw": "xsiam/test_data/NSSFWlog.syslog",
+          "canonical": "xsiam/test_data/NSSFWlog.canonical.json",
+          "parsed": "xsiam/test_data/NSSFWlog.parsed.json"
+        }
+      },
+      {
+        "name": "zscaler_web_log",
+        "samples": {
+          "raw": "xsiam/test_data/NSSWeblog.syslog",
+          "canonical": "xsiam/test_data/NSSWeblog.canonical.json",
+          "parsed": "xsiam/test_data/NSSWeblog.parsed.json"
+        }
+      }
     ],
-    "tags": [],
-    "useCases": [],
-    "keywords": [],
-    "marketplaces": [
-        "xsoar",
-        "marketplacev2"
-    ]
+    "data_models": {
+      "NETWORK": [
+        "zscaler_firewall_log",
+        "zscaler_web_log"
+      ]
+    },
+    "correlations": ["TODO XDR-49811"]
+  }
 }
